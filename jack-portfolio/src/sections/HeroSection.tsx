@@ -1,6 +1,7 @@
 import FadeIn from '../components/FadeIn'
 import Magnet from '../components/Magnet'
 import ContactButton from '../components/ContactButton'
+import TrophyConfetti from '../components/TrophyConfetti'
 
 const NAV_LINKS = ['About', 'Price', 'Projects', 'Contact']
 
@@ -44,14 +45,11 @@ export default function HeroSection() {
         strength={3}
         activeTransition="transform 0.3s ease-out"
         inactiveTransition="transform 0.6s ease-in-out"
-        className="absolute left-1/2 -translate-x-1/2 z-10 w-[280px] sm:w-[360px] md:w-[440px] lg:w-[520px] top-1/2 -translate-y-1/2 sm:top-auto sm:translate-y-0 sm:bottom-0"
+        className="absolute left-1/2 -translate-x-1/2 z-10 w-[340px] sm:w-[440px] md:w-[540px] lg:w-[640px] top-1/2 -translate-y-1/2 sm:top-auto sm:translate-y-0 sm:bottom-0"
+        style={{ height: '420px' }}
       >
-        <FadeIn delay={0.6} y={30}>
-          <img
-            src="https://em-content.zobj.net/source/twitter/376/trophy_1f3c6.png"
-            alt="Trophy"
-            className="w-full h-auto object-contain"
-          />
+        <FadeIn delay={0.6} y={30} className="w-full h-full">
+          <TrophyConfetti />
         </FadeIn>
       </Magnet>
 

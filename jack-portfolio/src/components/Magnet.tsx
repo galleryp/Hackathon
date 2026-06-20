@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from 'react'
+import { useRef, useState, type ReactNode, type CSSProperties } from 'react'
 
 interface MagnetProps {
   children: ReactNode
@@ -7,6 +7,7 @@ interface MagnetProps {
   activeTransition?: string
   inactiveTransition?: string
   className?: string
+  style?: CSSProperties
 }
 
 export default function Magnet({
@@ -16,6 +17,7 @@ export default function Magnet({
   activeTransition = 'transform 0.3s ease-out',
   inactiveTransition = 'transform 0.6s ease-in-out',
   className,
+  style,
 }: MagnetProps) {
   const ref = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(false)
@@ -50,7 +52,7 @@ export default function Magnet({
       className={className}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{
+      style={{ ...style,
         transform: `translate3d(${pos.x}px, ${pos.y}px, 0)`,
         transition: active ? activeTransition : inactiveTransition,
         willChange: 'transform',
