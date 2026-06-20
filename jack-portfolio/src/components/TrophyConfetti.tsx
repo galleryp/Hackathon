@@ -54,7 +54,7 @@ export default function TrophyConfetti() {
       const label = CONTESTS[Math.floor(Math.random() * CONTESTS.length)]
       // Trophy is roughly at left ~20% x, ~35% y of the viewport
       // Spawn pieces in a natural oval burst around that point
-      const cx = canvas.width * 0.22
+      const cx = canvas.width * 0.65
       const cy = canvas.height * 0.38
       const angle = Math.random() * Math.PI * 2
       // oval radius: wider horizontally than vertically
