@@ -52,24 +52,15 @@ export default function TrophyConfetti() {
 
     const spawn = (): Piece => {
       const label = CONTESTS[Math.floor(Math.random() * CONTESTS.length)]
-      // Trophy is roughly at left ~20% x, ~35% y of the viewport
-      // Spawn pieces in a natural oval burst around that point
-      const cx = canvas.width * 0.65
-      const cy = canvas.height * 0.38
-      const angle = Math.random() * Math.PI * 2
-      // oval radius: wider horizontally than vertically
-      const rx = canvas.width * 0.28
-      const ry = canvas.height * 0.30
-      // use sqrt for more even fill (not clustered at center)
-      const r = Math.sqrt(Math.random())
-      const x = cx + Math.cos(angle) * rx * r
-      const y = cy + Math.sin(angle) * ry * r
-      // drift outward from center slowly
-      const dx = x - cx
-      const dy = y - cy
-      const dist = Math.sqrt(dx * dx + dy * dy) || 1
-      const vx = (dx / dist) * (Math.random() * 0.6 + 0.2) + (Math.random() - 0.5) * 0.4
-      const vy = (dy / dist) * (Math.random() * 0.6 + 0.2) + Math.random() * 0.5 + 0.3
+      // Rectangle bounded by text: below heading (~18%), above bottom bar (~78%), full width with padding
+      const LEFT   = canvas.width  * 0.03
+      const RIGHT  = canvas.width  * 0.97
+      const TOP    = canvas.height * 0.18
+      const BOTTOM = canvas.height * 0.78
+      const x = LEFT + Math.random() * (RIGHT - LEFT)
+      const y = TOP  + Math.random() * (BOTTOM - TOP)
+      const vx = (Math.random() - 0.5) * 0.8
+      const vy = Math.random() * 0.6 + 0.2
       return {
         x, y, vx, vy,
         rotation: Math.random() * Math.PI * 2,
@@ -139,8 +130,17 @@ export default function TrophyConfetti() {
         ctx.fillText(p.label, 0, 0)
         ctx.restore()
 
-        // remove if off screen
-        return p.y < canvas.height + 60 && p.x > -150 && p.x < canvas.width + 150
+        // recycle: wrap back to top of zone when it exits the bottom boundary
+        const BOTTOM = canvas.height * 0.78
+        const LEFT   = canvas.width  * 0.03
+        const RIGHT  = canvas.width  * 0.97
+        if (p.y > BOTTOM + 30) {
+          p.y = canvas.height * 0.18
+          p.x = LEFT + Math.random() * (RIGHT - LEFT)
+        }
+        if (p.x < LEFT - 30)  p.x = RIGHT
+        if (p.x > RIGHT + 30) p.x = LEFT
+        return true
       })
 
       rafRef.current = requestAnimationFrame(animate)
