@@ -48,8 +48,8 @@ export default function HeroSection() {
       >
         <FadeIn delay={0.6} y={30}>
           <img
-            src="https://shrug-person-78902957.figma.site/_components/v2/d24c01ad3a56fc65e942a1f501eb73db42d7cf9a/Rectangle_40443.81459862.png"
-            alt="Jack portrait"
+            src="https://em-content.zobj.net/source/twitter/376/trophy_1f3c6.png"
+            alt="Trophy"
             className="w-full h-auto object-contain"
           />
         </FadeIn>
