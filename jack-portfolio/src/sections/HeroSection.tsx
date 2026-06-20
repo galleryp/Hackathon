@@ -59,10 +59,10 @@ export default function HeroSection() {
       <div className="mt-auto flex justify-between items-end px-6 md:px-10 pb-7 sm:pb-8 md:pb-10 relative z-20">
         <FadeIn delay={0.35} y={20}>
           <p
-            className="font-light uppercase tracking-wide leading-snug max-w-[160px] sm:max-w-[220px] md:max-w-[260px]"
+            className="font-light uppercase tracking-wide leading-snug max-w-[220px] sm:max-w-[300px] md:max-w-[360px]"
             style={{ color: '#D7E2EA', fontSize: 'clamp(0.75rem, 1.4vw, 1.5rem)' }}
           >
-            a 3d creator driven by crafting striking and unforgettable projects
+            Track problems, earn XP, get AI-powered help, and follow structured study plans, all in one place for AMC, AIME, USAMO, USAPhO, USABO, and more.
           </p>
         </FadeIn>
         <FadeIn delay={0.5} y={20}>
