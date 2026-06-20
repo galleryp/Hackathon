@@ -54,22 +54,25 @@ export default function TrophyConfetti() {
       const label = CONTESTS[Math.floor(Math.random() * CONTESTS.length)]
       const side = Math.random()
       let x: number, y: number, vx: number, vy: number
-      // spawn from edges or top
-      if (side < 0.4) {
-        x = Math.random() * canvas.width
+      // bias spawning toward upper-right quadrant
+      if (side < 0.5) {
+        // top edge, biased right
+        x = canvas.width * 0.35 + Math.random() * canvas.width * 0.65
         y = -20
-        vx = (Math.random() - 0.5) * 1.5
+        vx = (Math.random() - 0.3) * 1.5
         vy = Math.random() * 1.5 + 0.8
-      } else if (side < 0.7) {
-        x = -10
-        y = Math.random() * canvas.height * 0.7
-        vx = Math.random() * 1.5 + 0.5
-        vy = Math.random() * 1.5 + 0.3
-      } else {
+      } else if (side < 0.75) {
+        // right edge, upper portion
         x = canvas.width + 10
-        y = Math.random() * canvas.height * 0.7
+        y = Math.random() * canvas.height * 0.55
         vx = -(Math.random() * 1.5 + 0.5)
-        vy = Math.random() * 1.5 + 0.3
+        vy = Math.random() * 1.2 + 0.3
+      } else {
+        // upper-right area random
+        x = canvas.width * 0.4 + Math.random() * canvas.width * 0.6
+        y = Math.random() * canvas.height * 0.4
+        vx = (Math.random() - 0.5) * 1.2
+        vy = Math.random() * 1.2 + 0.5
       }
       return {
         x, y, vx, vy,
@@ -88,11 +91,11 @@ export default function TrophyConfetti() {
 
     ctx.font = 'bold 13px Kanit, sans-serif'
 
-    // seed initial pieces spread across full viewport
+    // seed initial pieces biased toward upper-right
     for (let i = 0; i < 60; i++) {
       const p = spawn()
-      p.x = Math.random() * (canvas.width || window.innerWidth)
-      p.y = Math.random() * (canvas.height || window.innerHeight)
+      p.x = (canvas.width || window.innerWidth) * 0.35 + Math.random() * (canvas.width || window.innerWidth) * 0.65
+      p.y = Math.random() * (canvas.height || window.innerHeight) * 0.65
       p.width = ctx.measureText(p.label).width + 18
       piecesRef.current.push(p)
     }
