@@ -45,7 +45,7 @@ export default function HeroSection() {
         strength={3}
         activeTransition="transform 0.3s ease-out"
         inactiveTransition="transform 0.6s ease-in-out"
-        className="absolute right-[5%] sm:right-[8%] md:right-[10%] z-10 w-[280px] sm:w-[360px] md:w-[440px] lg:w-[500px] top-[8%] sm:top-[10%] md:top-[12%]"
+        className="absolute left-[5%] sm:left-[8%] md:left-[10%] z-10 w-[280px] sm:w-[360px] md:w-[440px] lg:w-[500px] top-[22%] sm:top-[20%] md:top-[18%]"
         style={{ height: '420px' }}
       >
         <FadeIn delay={0.6} y={30} className="w-full h-full">

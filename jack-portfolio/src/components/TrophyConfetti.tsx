@@ -52,28 +52,24 @@ export default function TrophyConfetti() {
 
     const spawn = (): Piece => {
       const label = CONTESTS[Math.floor(Math.random() * CONTESTS.length)]
-      const side = Math.random()
-      let x: number, y: number, vx: number, vy: number
-      // bias spawning toward upper-right quadrant
-      if (side < 0.5) {
-        // top edge, biased right
-        x = canvas.width * 0.35 + Math.random() * canvas.width * 0.65
-        y = -20
-        vx = (Math.random() - 0.3) * 1.5
-        vy = Math.random() * 1.5 + 0.8
-      } else if (side < 0.75) {
-        // right edge, upper portion
-        x = canvas.width + 10
-        y = Math.random() * canvas.height * 0.55
-        vx = -(Math.random() * 1.5 + 0.5)
-        vy = Math.random() * 1.2 + 0.3
-      } else {
-        // upper-right area random
-        x = canvas.width * 0.4 + Math.random() * canvas.width * 0.6
-        y = Math.random() * canvas.height * 0.4
-        vx = (Math.random() - 0.5) * 1.2
-        vy = Math.random() * 1.2 + 0.5
-      }
+      // Trophy is roughly at left ~20% x, ~35% y of the viewport
+      // Spawn pieces in a natural oval burst around that point
+      const cx = canvas.width * 0.22
+      const cy = canvas.height * 0.38
+      const angle = Math.random() * Math.PI * 2
+      // oval radius: wider horizontally than vertically
+      const rx = canvas.width * 0.28
+      const ry = canvas.height * 0.30
+      // use sqrt for more even fill (not clustered at center)
+      const r = Math.sqrt(Math.random())
+      const x = cx + Math.cos(angle) * rx * r
+      const y = cy + Math.sin(angle) * ry * r
+      // drift outward from center slowly
+      const dx = x - cx
+      const dy = y - cy
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1
+      const vx = (dx / dist) * (Math.random() * 0.6 + 0.2) + (Math.random() - 0.5) * 0.4
+      const vy = (dy / dist) * (Math.random() * 0.6 + 0.2) + Math.random() * 0.5 + 0.3
       return {
         x, y, vx, vy,
         rotation: Math.random() * Math.PI * 2,
@@ -91,11 +87,9 @@ export default function TrophyConfetti() {
 
     ctx.font = 'bold 13px Kanit, sans-serif'
 
-    // seed initial pieces biased toward upper-right
+    // seed initial pieces — spawn() already places them in the oval
     for (let i = 0; i < 60; i++) {
       const p = spawn()
-      p.x = (canvas.width || window.innerWidth) * 0.35 + Math.random() * (canvas.width || window.innerWidth) * 0.65
-      p.y = Math.random() * (canvas.height || window.innerHeight) * 0.65
       p.width = ctx.measureText(p.label).width + 18
       piecesRef.current.push(p)
     }
@@ -146,7 +140,7 @@ export default function TrophyConfetti() {
         ctx.restore()
 
         // remove if off screen
-        return p.y < canvas.height + 40 && p.x > -100 && p.x < canvas.width + 100
+        return p.y < canvas.height + 60 && p.x > -150 && p.x < canvas.width + 150
       })
 
       rafRef.current = requestAnimationFrame(animate)
