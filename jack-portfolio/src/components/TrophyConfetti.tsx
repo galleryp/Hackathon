@@ -44,8 +44,8 @@ export default function TrophyConfetti() {
     if (!ctx) return
 
     const resize = () => {
-      canvas.width = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
     }
     resize()
     window.addEventListener('resize', resize)
@@ -86,29 +86,27 @@ export default function TrophyConfetti() {
       }
     }
 
-    // seed initial pieces
-    for (let i = 0; i < 28; i++) {
+    ctx.font = 'bold 13px Kanit, sans-serif'
+
+    // seed initial pieces spread across full viewport
+    for (let i = 0; i < 60; i++) {
       const p = spawn()
-      p.x = Math.random() * (canvas.width || 400)
-      p.y = Math.random() * (canvas.height || 400)
+      p.x = Math.random() * (canvas.width || window.innerWidth)
+      p.y = Math.random() * (canvas.height || window.innerHeight)
+      p.width = ctx.measureText(p.label).width + 18
       piecesRef.current.push(p)
     }
-
-    ctx.font = 'bold 11px Kanit, sans-serif'
-    piecesRef.current.forEach(p => {
-      p.width = ctx.measureText(p.label).width + 16
-    })
 
     const animate = () => {
       frameRef.current++
       if (!canvas) return
       ctx.clearRect(0, 0, canvas.width, canvas.height)
-      ctx.font = 'bold 11px Kanit, sans-serif'
+      ctx.font = 'bold 13px Kanit, sans-serif'
 
-      // spawn new piece every ~40 frames
-      if (frameRef.current % 40 === 0 && piecesRef.current.length < 40) {
+      // spawn new pieces every ~20 frames
+      if (frameRef.current % 20 === 0 && piecesRef.current.length < 80) {
         const p = spawn()
-        p.width = ctx.measureText(p.label).width + 16
+        p.width = ctx.measureText(p.label).width + 18
         piecesRef.current.push(p)
       }
 
@@ -161,16 +159,23 @@ export default function TrophyConfetti() {
 
   return (
     <div className="relative w-full h-full">
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
-        style={{ pointerEvents: 'none' }}
-      />
       <img
         src="https://em-content.zobj.net/source/twitter/376/trophy_1f3c6.png"
         alt="Trophy"
-        className="relative w-full h-auto object-contain z-10"
-        style={{ filter: 'drop-shadow(0 0 40px rgba(255,215,0,0.3))' }}
+        className="relative w-full h-auto object-contain"
+        style={{ filter: 'drop-shadow(0 0 40px rgba(255,215,0,0.4))', position: 'relative', zIndex: 1 }}
+      />
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          pointerEvents: 'none',
+          zIndex: 20,
+        }}
       />
     </div>
   )
